@@ -7,18 +7,18 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 /*
- * Îå×ÓÆå-ÆåÅÌÀà
+ * äº”å­æ£‹-æ£‹ç›˜ç±»
  */
 public class ChessBoard extends JPanel implements MouseListener
 {
 	public static final int MARGIN = 30,GRID_SPAN = 35,ROWS = 20,COLS = 20;
-	//±ß¾à£¬Íø¸ñ¼ä¾à£¬ÆåÅÌĞĞÊı£¬ÆåÅÌÁĞÊı
+	//è¾¹è·ï¼Œç½‘æ ¼é—´è·ï¼Œæ£‹ç›˜è¡Œæ•°ï¼Œæ£‹ç›˜åˆ—æ•°
 	Point[] chessList = new Point[(ROWS+1)*(COLS+1)];
-	//³õÊ¼Ã¿¸öÊı×éÔªËØÎªnull
-	boolean isBlack = true;//ÊÇ·ñºÚÏÈ
+	//åˆå§‹æ¯ä¸ªæ•°ç»„å…ƒç´ ä¸ºnull
+	boolean isBlack = true;//æ˜¯å¦é»‘å…ˆ
 	boolean gameOver = false;
-	int chessCount; //µ±Ç°ÆåÅÌµÄÆå×Ó¸öÊı
-	int xIndex,yIndex;//µ±Ç°¸ÕÏÂµÄÆå×ÓµÄË÷Òı
+	int chessCount; //å½“å‰æ£‹ç›˜çš„æ£‹å­ä¸ªæ•°
+	int xIndex,yIndex;//å½“å‰åˆšä¸‹çš„æ£‹å­çš„ç´¢å¼•
 	public ChessBoard()
 	{
 		setBackground(Color.cyan);
@@ -26,29 +26,29 @@ public class ChessBoard extends JPanel implements MouseListener
 		addMouseMotionListener(new MouseMotionListener() {
 			public void mouseMoved(MouseEvent e) {
 				int x1 = (e.getX()-MARGIN+GRID_SPAN/2)/GRID_SPAN;
-				//½«Êó±êµ¥»÷µÄ×ø±êÎ»ÖÃ×°»»³ÉÍø¸ñË÷Òı
+				//å°†é¼ æ ‡å•å‡»çš„åæ ‡ä½ç½®è£…æ¢æˆç½‘æ ¼ç´¢å¼•
 				int y1 = (e.getY()-MARGIN+GRID_SPAN/2)/GRID_SPAN;
-				//ÓÎÏ·ÒÑ¾­½áÊø£¬²»ÄÜÏÂ
-				//ÂäÔÚÆåÅÌÍâ£¬²»ÄÜÏÂ
-				//x£¬yÎ»ÖÃÒÑ¾­ÓĞÆå×Ó´æÔÚ£¬²»ÄÜÏÂ
+				//æ¸¸æˆå·²ç»ç»“æŸï¼Œä¸èƒ½ä¸‹
+				//è½åœ¨æ£‹ç›˜å¤–ï¼Œä¸èƒ½ä¸‹
+				//xï¼Œyä½ç½®å·²ç»æœ‰æ£‹å­å­˜åœ¨ï¼Œä¸èƒ½ä¸‹
 				if (x1<0||x1>ROWS||y1<0||y1>COLS||gameOver||findChess(x1,y1)) 
 				{
-					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));//ÉèÖÃ³ÉÄ¬ÈÏĞÎ
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));//è®¾ç½®æˆé»˜è®¤å½¢
 				}
 				else
 				{
-					setCursor(new Cursor(Cursor.HAND_CURSOR));//ÉèÖÃ³ÉÊÖĞÍ
+					setCursor(new Cursor(Cursor.HAND_CURSOR));//è®¾ç½®æˆæ‰‹å‹
 				}
 			}
 			public void mouseDragged(MouseEvent e) {
 			}
 		});
 	}
-	//»æÖÆ
+	//ç»˜åˆ¶
 	public void paintComponent(Graphics g) 
 	{
 		super.paintComponent(g);
-		//»­ÆåÅÌ
+		//ç”»æ£‹ç›˜
 		for (int i = 0; i <= ROWS; i++) {
 			g.drawLine(MARGIN, MARGIN+i*GRID_SPAN, MARGIN+COLS*GRID_SPAN,MARGIN+i*GRID_SPAN);
 		}
@@ -57,59 +57,59 @@ public class ChessBoard extends JPanel implements MouseListener
 		}
 		for (int i = 0; i < chessCount; i++) {
 			int xPos = chessList[i].getX()*GRID_SPAN+MARGIN;
-			//Íø¸ñ½»²æµãµÄx×ø±ê
+			//ç½‘æ ¼äº¤å‰ç‚¹çš„xåæ ‡
 			int yPos = chessList[i].getY()*GRID_SPAN+MARGIN;
-			//Íø¸ñ½»²æµãµÄy×ø±ê
-			g.setColor(chessList[i].getColor());//ÉèÖÃÑÕÉ«
+			//ç½‘æ ¼äº¤å‰ç‚¹çš„yåæ ‡
+			g.setColor(chessList[i].getColor());//è®¾ç½®é¢œè‰²
 		
 			g.fillOval(xPos-Point.DIAMETER/2, yPos-Point.DIAMETER/2, Point.DIAMETER, Point.DIAMETER);
-			//Ìî³äÆå×Ó
+			//å¡«å……æ£‹å­
 			
-			//±ê¼Ç×îºóÒ»¸öÆå×ÓµÄºì¾ØĞÎ¿ò
+			//æ ‡è®°æœ€åä¸€ä¸ªæ£‹å­çš„çº¢çŸ©å½¢æ¡†
 			if (i==chessCount-1) 
-			{//×îºóÒ»¸öÆå×Ó
+			{//æœ€åä¸€ä¸ªæ£‹å­
 				g.setColor(Color.red);
 				g.drawRect(xPos-Point.DIAMETER/2, yPos-Point.DIAMETER/2, Point.DIAMETER,Point.DIAMETER);
 			}
 		}
 	}
-	//Êó±ê°´¼üÔÚ×é¼şÉÏ°´ÏÂÊ±µ÷ÓÃ
+	//é¼ æ ‡æŒ‰é”®åœ¨ç»„ä»¶ä¸ŠæŒ‰ä¸‹æ—¶è°ƒç”¨
 	public void mousePressed(MouseEvent e) 
-	{//ÓÎÏ·ÒÑ¾­½áÊø£¬²»ÄÜÏÂ
+	{//æ¸¸æˆå·²ç»ç»“æŸï¼Œä¸èƒ½ä¸‹
 		if (gameOver) return;
-		String colorName = isBlack?"ºÚÆå":"°×Æå";
+		String colorName = isBlack?"é»‘æ£‹":"ç™½æ£‹";
 		xIndex = (e.getX()-MARGIN+GRID_SPAN/2)/GRID_SPAN;
-		//½«Êó±êµ¥»÷µÄ×ø±êÎ»ÖÃ×ª»»³ÉÍø¸ñË÷Òı
+		//å°†é¼ æ ‡å•å‡»çš„åæ ‡ä½ç½®è½¬æ¢æˆç½‘æ ¼ç´¢å¼•
 		yIndex = (e.getY()-MARGIN+GRID_SPAN/2)/GRID_SPAN;
 		
-		//ÂäÔÚÆåÅÌÍâ£¬²»ÄÜÏÂ
+		//è½åœ¨æ£‹ç›˜å¤–ï¼Œä¸èƒ½ä¸‹
 		if (xIndex<0||xIndex>ROWS||yIndex<0||yIndex>COLS) return;
 		
-		//x£¬yÎ»ÖÃ ÒÑ¾­ÓĞÆå×Ó ´æÔÚ£¬²»ÄÜÏÂ
+		//xï¼Œyä½ç½® å·²ç»æœ‰æ£‹å­ å­˜åœ¨ï¼Œä¸èƒ½ä¸‹
 		if (findChess(xIndex,yIndex)) return;
 		
 		Point ch = new Point(xIndex, yIndex, isBlack?Color.black:Color.white);
 		chessList[chessCount++] = ch;
-		repaint();// Í¨ÖªÏµÍ³ÖØĞÂ»æÖÆ
+		repaint();// é€šçŸ¥ç³»ç»Ÿé‡æ–°ç»˜åˆ¶
 		if (isWin()) 
-		{//¸ø³öÊ¤ÀûĞÅÏ¢£¬²»ÄÜÔÙ¼ÌĞøÏÂÆå
-			String msg = String.format("¹§Ï²£¬%sÓ®ÁË", colorName);
+		{//ç»™å‡ºèƒœåˆ©ä¿¡æ¯ï¼Œä¸èƒ½å†ç»§ç»­ä¸‹æ£‹
+			String msg = String.format("æ­å–œï¼Œ%sèµ¢äº†", colorName);
 			JOptionPane.showMessageDialog(this, msg);
 			gameOver = true;
 		}
 			isBlack = !isBlack;
 	}
-		//¸²¸Ç MouseListenerµÄ·½·¨
+		//è¦†ç›– MouseListenerçš„æ–¹æ³•
 	public void mouseClisked(MouseEvent e){
-	}//Êó±ê°´¼üÔÚ×é¼şÉÏµ¥»÷£¨°´ÏÂ²¢ÊÍ·Å£©Ê±µ÷ÓÃ
+	}//é¼ æ ‡æŒ‰é”®åœ¨ç»„ä»¶ä¸Šå•å‡»ï¼ˆæŒ‰ä¸‹å¹¶é‡Šæ”¾ï¼‰æ—¶è°ƒç”¨
 	public void mouseEntered(MouseEvent e){
-	}//Êó±ê½øÈëµ½×é¼şÉÏÊ±µ÷ÓÃ
+	}//é¼ æ ‡è¿›å…¥åˆ°ç»„ä»¶ä¸Šæ—¶è°ƒç”¨
 	public void mouseExited(MouseEvent e){
-	}//Êó±êÀë¿ª×é¼şÊ±µ÷ÓÃ
+	}//é¼ æ ‡ç¦»å¼€ç»„ä»¶æ—¶è°ƒç”¨
 	public void mouseReleased(MouseEvent e){
-	}//Êó±ê°´Å¥ÔÚ×é¼şÉÏÊÍ·ÅÊ±µ÷ÓÃ
+	}//é¼ æ ‡æŒ‰é’®åœ¨ç»„ä»¶ä¸Šé‡Šæ”¾æ—¶è°ƒç”¨
 		
-	//ÔÚÆå×ÓÊı×éÖĞ²éÕÒÊÇ·ñÓĞË÷ÒıÎªx£¬yµÄÆå×Ó´æÔÚ
+	//åœ¨æ£‹å­æ•°ç»„ä¸­æŸ¥æ‰¾æ˜¯å¦æœ‰ç´¢å¼•ä¸ºxï¼Œyçš„æ£‹å­å­˜åœ¨
 	private boolean findChess(int x,int y)
 	{
 		for (Point c : chessList) 
@@ -119,12 +119,12 @@ public class ChessBoard extends JPanel implements MouseListener
 		return false;
 	}
 	
-	//ÅĞ¶ÏÄÄ·½Ó®
+	//åˆ¤æ–­å“ªæ–¹èµ¢
 	private boolean isWin()
 	{
 		int continueCount = 1;
-		//Á¬ĞøÆå×ÓµÄ¸öÊı
-		//ºáÏòÏòÎ÷Ñ°ÕÒ
+		//è¿ç»­æ£‹å­çš„ä¸ªæ•°
+		//æ¨ªå‘å‘è¥¿å¯»æ‰¾
 		for (int x = xIndex-1; x >= 0; x--) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
@@ -132,7 +132,7 @@ public class ChessBoard extends JPanel implements MouseListener
 			else break;
 		}
 		
-		//ºáÏòÏò¶«Ñ°ÕÒ
+		//æ¨ªå‘å‘ä¸œå¯»æ‰¾
 		for (int x = xIndex+1; x <= COLS; x++) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
@@ -140,70 +140,70 @@ public class ChessBoard extends JPanel implements MouseListener
 			else break;
 		}
 		
-		//ÅĞ¶Ï¼ÇÂ¼ÊıÊÇ·ñ´óÓÚµÈÓÚ5£¬¼´±íÊ¾´Ë·½È¡Ê¤
+		//åˆ¤æ–­è®°å½•æ•°æ˜¯å¦å¤§äºç­‰äº5ï¼Œå³è¡¨ç¤ºæ­¤æ–¹å–èƒœ
 		if (continueCount>=5) {
 			return true;
 		}else 
 			continueCount = 1;
 		
-		//¼ÌĞøÁíÒ»ÖÖÇé¿öµÄËÑË÷£º×İÏò
-		//×İÏòÏòÄÏÑ°ÕÒ
+		//ç»§ç»­å¦ä¸€ç§æƒ…å†µçš„æœç´¢ï¼šçºµå‘
+		//çºµå‘å‘å—å¯»æ‰¾
 		for (int y = yIndex-1; y >= 0; y--) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
 			if (getChess(xIndex,y,c)!=null) continueCount++;
 			else break;
 		}
-		//×İÏòÏò±±Ñ°ÕÒ
+		//çºµå‘å‘åŒ—å¯»æ‰¾
 		for (int y = yIndex+1; y <= ROWS; y++) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
 			if (getChess(xIndex,y,c)!=null) continueCount++;
 			else break;
 		}
-		//ÅĞ¶Ï¼ÇÂ¼ÊıÊÇ·ñ´óÓÚµÈÓÚ5£¬¼´±íÊ¾´Ë·½È¡Ê¤
+		//åˆ¤æ–­è®°å½•æ•°æ˜¯å¦å¤§äºç­‰äº5ï¼Œå³è¡¨ç¤ºæ­¤æ–¹å–èƒœ
 		if (continueCount>=5) {
 			return true;
 		}else 
 			continueCount = 1;
 		
-		//¼ÌĞøÁíÒ»ÖÖÇé¿öµÄËÑË÷£ºĞ±Ïò
-		//ÓÒÉÏÑ°ÕÒ
+		//ç»§ç»­å¦ä¸€ç§æƒ…å†µçš„æœç´¢ï¼šæ–œå‘
+		//å³ä¸Šå¯»æ‰¾
 		for (int x = xIndex+1, y = yIndex-1; x <= COLS&&y >=0; x++,y--) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
 			if (getChess(x,y,c)!=null) continueCount++;
 			else break;
 		}
-		//×óÏÂÑ°ÕÒ
+		//å·¦ä¸‹å¯»æ‰¾
 		for (int x = xIndex-1, y = yIndex+1; x >= 0&&y <= ROWS; x--,y++) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
 			if (getChess(x,y,c)!=null) continueCount++;
 			else break;
 		}
-		//ÅĞ¶Ï¼ÇÂ¼ÊıÊÇ·ñ´óÓÚµÈÓÚ5£¬¼´±íÊ¾´Ë·½È¡Ê¤
+		//åˆ¤æ–­è®°å½•æ•°æ˜¯å¦å¤§äºç­‰äº5ï¼Œå³è¡¨ç¤ºæ­¤æ–¹å–èƒœ
 		if (continueCount>=5) {
 			return true;
 		}else 
 			continueCount = 1;
 		
-		//¼ÌĞøÁíÒ»ÖÖÇé¿öµÄËÑË÷£ºĞ±Ïò
-		//ÓÒÏÂÑ°ÕÒ
+		//ç»§ç»­å¦ä¸€ç§æƒ…å†µçš„æœç´¢ï¼šæ–œå‘
+		//å³ä¸‹å¯»æ‰¾
 		for (int x = xIndex+1, y = yIndex+1; x <= COLS&&y <= ROWS; x++,y++) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
 			if (getChess(x,y,c)!=null) continueCount++;
 			else break;
 		}
-		//×óÉÏÑ°ÕÒ
+		//å·¦ä¸Šå¯»æ‰¾
 		for (int x = xIndex-1, y = yIndex-1; x >= 0&&y >= 0; x--,y--) 
 		{
 			Color c = isBlack ? Color.black:Color.white;
 			if (getChess(x,y,c)!=null) continueCount++;
 			else break;
 		}
-		//ÅĞ¶Ï¼ÇÂ¼ÊıÊÇ·ñ´óÓÚµÈÓÚ5£¬¼´±íÊ¾´Ë·½È¡Ê¤
+		//åˆ¤æ–­è®°å½•æ•°æ˜¯å¦å¤§äºç­‰äº5ï¼Œå³è¡¨ç¤ºæ­¤æ–¹å–èƒœ
 		if (continueCount>=5) {
 			return true;
 		}else 
@@ -223,17 +223,17 @@ public class ChessBoard extends JPanel implements MouseListener
 	}
 	
 	public void restartGame()
-	{//Çå³ıÆå×Ó
+	{//æ¸…é™¤æ£‹å­
 		for (int i = 0; i < chessList.length; i++) chessList[i] = null;
 		
-		//»Ö¸´ÓÎÏ·Ïà¹ØµÄ±äÁ¿Öµ
+		//æ¢å¤æ¸¸æˆç›¸å…³çš„å˜é‡å€¼
 		isBlack = true;
 		gameOver = false;
 		chessCount = 0;
 		repaint();
 	}
 	
-	//»ÚÆå
+	//æ‚”æ£‹
 	public void goback()
 	{
 		if (chessCount==0) return;
@@ -247,7 +247,7 @@ public class ChessBoard extends JPanel implements MouseListener
 		isBlack = !isBlack;
 		repaint();
 	}
-	//Dimension:¾ØĞÎ
+	//Dimension:çŸ©å½¢
 	public Dimension getpreferredSize(){
 		return new Dimension(MARGIN*2+GRID_SPAN*COLS,MARGIN*2+GRID_SPAN*ROWS);
 	}
@@ -262,7 +262,7 @@ public class ChessBoard extends JPanel implements MouseListener
 		aa.add(bb);
 		aa.setVisible(true);
 	}
-		
+	
 }
 	
 	
